@@ -5,7 +5,7 @@ w = 500
 h = 500
 
 screen = pygame.display.set_mode([w, h])
-pygame.display.set_caption("Primer")
+pygame.display.set_caption("Primer - pygame")
 
 clock = pygame.time.Clock()
 elapsedTime = 0
@@ -24,7 +24,7 @@ while running:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       running = False
-  print(elapsedTime)
+
   while(elapsedTime / 1000 > fps):
     elapsedTime -= fps * 1000
 

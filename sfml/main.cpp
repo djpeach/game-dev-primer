@@ -10,7 +10,7 @@ int main() {
   int r = 75 * dpi;
   int v = 5;
 
-  sf::RenderWindow screen(sf::VideoMode(w, h), "Primer");
+  sf::RenderWindow screen(sf::VideoMode(w, h), "Primer - SFML");
 
   sf::Clock clock;
   float elapsedTime;

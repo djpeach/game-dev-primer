@@ -10,8 +10,6 @@ int main() {
   int r = 75 * dpi;
   int v = 1;
 
-  int i = 0;
-
   sf::RenderWindow screen(sf::VideoMode(w, h), "Primer");
 
   sf::CircleShape circle(r);
@@ -51,9 +49,6 @@ int main() {
       }
     }
 
-    // This will print much faster than the python/pygame version
-    i++;
-    std::cout << "Loop: " << i << std::endl;
     circle.move(x, y);
 
     screen.clear(sf::Color(255, 255, 255));

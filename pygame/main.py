@@ -12,8 +12,6 @@ y = 250
 r = 75
 v = 5
 
-i = 0
-
 running = True
 while running:
   for event in pygame.event.get():
@@ -41,10 +39,6 @@ while running:
       x += v
     else:
       x = h - r
-
-  # This will print much slower than the C++/SFML version
-  i += 1
-  print("Loop:", i)
 
   screen.fill((255, 255, 255))
   pygame.draw.circle(screen, (0, 0, 255), (x, y), r)

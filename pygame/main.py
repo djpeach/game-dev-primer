@@ -1,8 +1,16 @@
 import pygame
 pygame.init()
 
-screen = pygame.display.set_mode([500, 500])
+w = 500
+h = 500
+
+screen = pygame.display.set_mode([w, h])
 pygame.display.set_caption("Primer")
+
+x = 250
+y = 250
+r = 75
+v = 5
 
 running = True
 while running:
@@ -10,8 +18,30 @@ while running:
     if event.type == pygame.QUIT:
       running = False
 
+  keys = pygame.key.get_pressed()
+  if keys[pygame.K_w]:
+    if (y - v > r):
+      y -= v
+    else:
+      y = r
+  if keys[pygame.K_s]:
+    if (y + v < h - r):
+      y += v
+    else:
+      y = h - r
+  if keys[pygame.K_a]:
+    if (x - v > r):
+      x -= v
+    else:
+      x = r
+  if keys[pygame.K_d]:
+    if (x + v < w - r):
+      x += v
+    else:
+      x = h - r
+
   screen.fill((255, 255, 255))
-  pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+  pygame.draw.circle(screen, (0, 0, 255), (x, y), r)
 
   pygame.display.flip()
 

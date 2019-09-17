@@ -8,11 +8,13 @@ int main() {
   int h = 500 * dpi;
 
   int r = 75 * dpi;
-  int v = 1;
-
-  int i = 0;
+  int v = 5;
 
   sf::RenderWindow screen(sf::VideoMode(w, h), "Primer");
+
+  sf::Clock clock;
+  float elapsedTime;
+  float fps = 1 / 60.f;
 
   sf::CircleShape circle(r);
   circle.setFillColor(sf::Color(0, 0, 255));
@@ -20,6 +22,8 @@ int main() {
   circle.setPosition(screen.getSize().x / 2.f, screen.getSize().y / 2.f);
 
   while (screen.isOpen()) {
+    elapsedTime += clock.restart().asSeconds();
+
     int x = 0;
     int y = 0;
 
@@ -30,31 +34,33 @@ int main() {
       }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-      if(circle.getPosition().y - v > r) {
-        y -= v;
-      }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-      if(circle.getPosition().y + v < h - r) {
-        y += v;
-      }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-      if(circle.getPosition().x - v > r) {
-        x -= v;
-      }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-      if(circle.getPosition().x + v < w - r) {
-        x += v;
-      }
-    }
+    while (elapsedTime >= fps) {
+      elapsedTime -= fps;
 
-    // This will print much faster than the python/pygame version
-    i++;
-    std::cout << "Loop: " << i << std::endl;
-    circle.move(x, y);
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if(circle.getPosition().y - v > r) {
+          y -= v;
+        }
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        if(circle.getPosition().y + v < h - r) {
+          y += v;
+        }
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        if(circle.getPosition().x - v > r) {
+          x -= v;
+        }
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        if(circle.getPosition().x + v < w - r) {
+          x += v;
+        }
+      }
+
+      circle.move(x, y);
+
+    }
 
     screen.clear(sf::Color(255, 255, 255));
     screen.draw(circle);

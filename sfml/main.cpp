@@ -2,11 +2,18 @@
 #include <SFML/Graphics.hpp>
 
 int main() {
-  sf::RenderWindow screen(sf::VideoMode(500 * 2, 500 * 2), "Primer");
 
-  sf::CircleShape circle(75 * 2);
+  int dpi = 2;
+  int w = 500 * dpi;
+  int h = 500 * dpi;
+
+  int r = 75 * dpi;
+
+  sf::RenderWindow screen(sf::VideoMode(w, h), "Primer");
+
+  sf::CircleShape circle(r);
   circle.setFillColor(sf::Color(0, 0, 255));
-  circle.setOrigin(75 * 2, 75 * 2);
+  circle.setOrigin(r, r);
   circle.setPosition(screen.getSize().x / 2.f, screen.getSize().y / 2.f);
 
   while (screen.isOpen()) {

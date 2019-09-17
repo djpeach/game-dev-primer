@@ -8,7 +8,7 @@ int main() {
   int h = 500 * dpi;
 
   int r = 75 * dpi;
-  int v = 5;
+  int v = 500 * dpi;
 
   sf::RenderWindow screen(sf::VideoMode(w, h), "Primer - SFML");
 
@@ -38,23 +38,31 @@ int main() {
       elapsedTime -= fps;
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if(circle.getPosition().y - v > r) {
-          y -= v;
+        if(circle.getPosition().y - (v * fps) > r) {
+          y -= (v * fps);
+        } else {
+          y -= circle.getPosition().y - r;
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if(circle.getPosition().y + v < h - r) {
-          y += v;
+        if(circle.getPosition().y + (v * fps) < h - r) {
+          y += (v * fps);
+        } else {
+          y += h - (circle.getPosition().y + r);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if(circle.getPosition().x - v > r) {
-          x -= v;
+        if(circle.getPosition().x - (v * fps) > r) {
+          x -= (v * fps);
+        } else {
+          x -= circle.getPosition().x - r;
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if(circle.getPosition().x + v < w - r) {
-          x += v;
+        if(circle.getPosition().x + (v * fps) < w - r) {
+          x += (v * fps);
+        } else {
+          x += w - (circle.getPosition().x + r);
         }
       }
 

@@ -1,19 +1,22 @@
 import pygame
 pygame.init()
 
-w = 500
-h = 500
-
-x = 250
-y = 250
+w = 800
+h = 800
 r = 50
+
+x = w / 2 - r
+y = h / 2 - r
+vx = 0
+vy = 0
 v = 500
 
 screen = pygame.display.set_mode([w, h])
 pygame.display.set_caption("Primer - pygame")
 bg = pygame.image.load("assets/images/bg.jpg")
-ship = pygame.image.load("assets/images/ship.png")
-ship = pygame.transform.scale(ship, (r * 2, r * 2))
+origShip = pygame.image.load("assets/images/ship.png")
+origShip = pygame.transform.scale(origShip, (r * 2, r * 2))
+ship = origShip
 
 clock = pygame.time.Clock()
 elapsedTime = 0
@@ -23,8 +26,8 @@ angle = 0
 
 running = True
 while running:
-  clock.tick()
-  elapsedTime += clock.get_rawtime()
+  clock.tick(60)
+  elapsedTime += clock.get_time()
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
@@ -35,38 +38,66 @@ while running:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
-      angle = 0
-      if (y - (v * fps) > -h / 2 - r):
+      if keys[pygame.K_a]:
+        ship = pygame.transform.rotate(origShip, -315)
+      elif keys[pygame.K_d]:
+        ship = pygame.transform.rotate(origShip, -45)
+      else:
+        ship = pygame.transform.rotate(origShip, 0)
+      if y + r - (v * fps) > h / 2:
+        y -= (v * fps)
+      elif vy - (v * fps) > bg.get_rect().top:
+        vy -= (v * fps)
+      elif y - (v * fps) > bg.get_rect().top:
         y -= (v * fps)
     if keys[pygame.K_s]:
-      angle = 180
-      if ((y + h) + (v * fps) < bg.get_rect().height - h / 2 - r):
+      if keys[pygame.K_a]:
+        ship = pygame.transform.rotate(origShip, -225)
+      elif keys[pygame.K_d]:
+        ship = pygame.transform.rotate(origShip, -135)
+      else:
+        ship = pygame.transform.rotate(origShip, 180)
+      if y + r + (v * fps) < h / 2:
+        y += (v * fps)
+      elif vy + h + (v * fps) < bg.get_rect().bottom:
+        vy += (v * fps)
+      elif y + ship.get_rect().height + (v * fps) < h:
         y += (v * fps)
     if keys[pygame.K_a]:
-      angle = 90
-      if (x - (v * fps) > -w / 2 - r):
+      if keys[pygame.K_w]:
+        ship = pygame.transform.rotate(origShip, -315)
+      elif keys[pygame.K_s]:
+        ship = pygame.transform.rotate(origShip, -225)
+      else:
+        ship = pygame.transform.rotate(origShip, -270)
+      if x + r - (v * fps) > w / 2:
+        x -= (v * fps)
+      elif vx - (v * fps) > bg.get_rect().left:
+        vx -= (v * fps)
+      elif x - (v * fps) > bg.get_rect().left:
         x -= (v * fps)
     if keys[pygame.K_d]:
-      angle = 270
-      if ((x + w) + (v * fps) < bg.get_rect().width - w / 2 - r):
+      if keys[pygame.K_w]:
+        ship = pygame.transform.rotate(origShip, -45)
+      elif keys[pygame.K_s]:
+        ship = pygame.transform.rotate(origShip, -135)
+      else:
+        ship = pygame.transform.rotate(origShip, -90)
+      if x + r + (v * fps) < w / 2:
+        x += (v * fps)
+      elif vx + h + (v * fps) < bg.get_rect().right:
+        vx += (v * fps)
+      elif x + ship.get_rect().height + (v * fps) < w:
         x += (v * fps)
 
-  if angle == 0 and prevAng != 0:
-    ship = pygame.transform.rotate(ship, -prevAng)
-    prevAng = 0
-  if angle == 180 and prevAng != 180:
-    ship = pygame.transform.rotate(ship, 180 - prevAng)
-    prevAng = 180
-  if angle == 90 and prevAng != 90:
-    ship = pygame.transform.rotate(ship, 90 - prevAng)
-    prevAng = 90
-  if angle == 270 and prevAng != 270:
-    ship = pygame.transform.rotate(ship, 270 - prevAng)
-    prevAng = 270
+    # if angle != prevAng:
+    #   print(angle, prevAng, angle - prevAng)
+    #   ship = pygame.transform.rotate(ship, angle - prevAng)
+    #   prevAng = angle
 
   screen.fill((255, 255, 255))
-  screen.blit(bg, (int(-x) - r - w / 2, int(-y) - r - h / 2))
-  screen.blit(ship, (250 - r, 250 - r))
+  screen.blit(bg, (int(-vx), int(-vy)))
+  screen.blit(ship, (int(x), int(y)))
 
   pygame.display.flip()
 

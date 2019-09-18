@@ -5,8 +5,8 @@
 int main() {
 
   int dpi = 2;
-  int w = 1000 * dpi;
-  int h = 1000 * dpi;
+  int w = 800 * dpi;
+  int h = 800 * dpi;
 
   int r = 50 * dpi;
   int v = 500 * dpi;
@@ -65,7 +65,7 @@ int main() {
           ship.setRotation(0);
         }
         if(ship.getPosition().y - (v * fps) < screen.getView().getCenter().y &&
-           screen.getView().getCenter().y - (h / 2) - (v * fps) > space.top - r * 1.5f) {
+           screen.getView().getCenter().y - (h / 2) - (v * fps) > space.top) {
           vy -= (v * fps);
         }
         if(ship.getPosition().y - (v * fps) > space.top + r) {
@@ -81,7 +81,7 @@ int main() {
           ship.setRotation(180);
         }
         if(ship.getPosition().y + (v * fps) > screen.getView().getCenter().y &&
-           screen.getView().getCenter().y + (h / 2) + (v * fps) < space.height + r * 1.5f) {
+           screen.getView().getCenter().y + (h / 2) + (v * fps) < space.height) {
           vy += (v * fps);
         }
         if(ship.getPosition().y + (v * fps) < space.height - r) {

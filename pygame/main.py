@@ -1,8 +1,8 @@
 import pygame
 pygame.init()
 
-w = 800
-h = 800
+w = 500
+h = 500
 r = 50
 
 x = w / 2 - r
@@ -89,11 +89,6 @@ while running:
         vx += (v * fps)
       elif x + ship.get_rect().height + (v * fps) < w:
         x += (v * fps)
-
-    # if angle != prevAng:
-    #   print(angle, prevAng, angle - prevAng)
-    #   ship = pygame.transform.rotate(ship, angle - prevAng)
-    #   prevAng = angle
 
   screen.fill((255, 255, 255))
   screen.blit(bg, (int(-vx), int(-vy)))

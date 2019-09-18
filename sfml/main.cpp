@@ -12,6 +12,15 @@ int main() {
   int v = 500 * dpi;
 
   sf::RenderWindow screen(sf::VideoMode(w, h), "Primer - SFML");
+  std::string bgFilePath = "assets/images/bg.jpg";
+  sf::Texture bgTexture;
+  if (!bgTexture.loadFromFile(bgFilePath)) {
+    std::cerr << "could not load bg from file: " << bgFilePath << std::endl;
+    exit(1);
+  }
+  sf::Sprite bg(bgTexture);
+  sf::FloatRect space = bg.getGlobalBounds();
+  sf::View view = screen.getView();
 
   sf::Clock clock;
   float elapsedTime;
@@ -20,7 +29,7 @@ int main() {
   std::string shipFilePath = "assets/images/ship.png";
   sf::Texture shipTexture;
   if (!shipTexture.loadFromFile(shipFilePath)) {
-    std::cerr << "could not load from file: " << shipFilePath << std::endl;
+    std::cerr << "could not load ship from file: " << shipFilePath << std::endl;
     exit(1);
   }
   sf::Sprite ship(shipTexture);
@@ -33,6 +42,8 @@ int main() {
 
     int x = 0;
     int y = 0;
+    int vx = 0;
+    int vy = 0;
 
     sf::Event event;
     while (screen.pollEvent(event)) {
@@ -45,39 +56,38 @@ int main() {
       elapsedTime -= fps;
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if(ship.getPosition().y - (v * fps) > r) {
+        if(ship.getPosition().y - (v * fps) > h / 2) {
           y -= (v * fps);
-        } else {
-          y -= ship.getPosition().y - r;
+          vy -= (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if(ship.getPosition().y + (v * fps) < h - r) {
+        if(ship.getPosition().y + (v * fps) < space.height - h / 2) {
           y += (v * fps);
-        } else {
-          y += h - (ship.getPosition().y + r);
+          vy += (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if(ship.getPosition().x - (v * fps) > r) {
+        if(ship.getPosition().x - (v * fps) > w / 2) {
           x -= (v * fps);
-        } else {
-          x -= ship.getPosition().x - r;
+          vx -= (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if(ship.getPosition().x + (v * fps) < w - r) {
+        if(ship.getPosition().x + (v * fps) < space.width - w / 2) {
           x += (v * fps);
-        } else {
-          x += w - (ship.getPosition().x + r);
+          vx += (v * fps);
         }
       }
 
       ship.move(x, y);
+      view.move(vx, vy);
 
     }
 
+    screen.setView(view);
     screen.clear(sf::Color(255, 255, 255));
+    screen.draw(bg);
     screen.draw(ship);
     screen.display();
   }

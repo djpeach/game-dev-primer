@@ -5,8 +5,8 @@
 int main() {
 
   int dpi = 2;
-  int w = 500 * dpi;
-  int h = 500 * dpi;
+  int w = 1000 * dpi;
+  int h = 1000 * dpi;
 
   int r = 50 * dpi;
   int v = 500 * dpi;
@@ -57,31 +57,67 @@ int main() {
       elapsedTime -= fps;
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        ship.setRotation(0);
-        if(ship.getPosition().y - (v * fps) > h / 2) {
-          y -= (v * fps);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+          ship.setRotation(-45);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+          ship.setRotation(45);
+        } else {
+          ship.setRotation(0);
+        }
+        if(ship.getPosition().y - (v * fps) < screen.getView().getCenter().y &&
+           screen.getView().getCenter().y - (h / 2) - (v * fps) > space.top - r * 1.5f) {
           vy -= (v * fps);
+        }
+        if(ship.getPosition().y - (v * fps) > space.top + r) {
+          y -= (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        ship.setRotation(180);
-        if(ship.getPosition().y + (v * fps) < space.height - h / 2) {
-          y += (v * fps);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+          ship.setRotation(-135);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+          ship.setRotation(135);
+        } else {
+          ship.setRotation(180);
+        }
+        if(ship.getPosition().y + (v * fps) > screen.getView().getCenter().y &&
+           screen.getView().getCenter().y + (h / 2) + (v * fps) < space.height + r * 1.5f) {
           vy += (v * fps);
+        }
+        if(ship.getPosition().y + (v * fps) < space.height - r) {
+          y += (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        ship.setRotation(-90);
-        if(ship.getPosition().x - (v * fps) > w / 2) {
-          x -= (v * fps);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+          ship.setRotation(-45);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+          ship.setRotation(-135);
+        } else {
+          ship.setRotation(-90);
+        }
+        if(ship.getPosition().x - (v * fps) < screen.getView().getCenter().x &&
+           screen.getView().getCenter().x - (w / 2) - (v * fps) > space.left) {
           vx -= (v * fps);
+        }
+        if(ship.getPosition().x - (v * fps) > space.left + r) {
+          x -= (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        ship.setRotation(90);
-        if(ship.getPosition().x + (v * fps) < space.width - w / 2) {
-          x += (v * fps);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+          ship.setRotation(45);
+        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+          ship.setRotation(135);
+        } else {
+          ship.setRotation(90);
+        }
+        if(ship.getPosition().x + (v * fps) > screen.getView().getCenter().x &&
+           screen.getView().getCenter().x + (w / 2) + (v * fps) < space.width) {
           vx += (v * fps);
+        }
+        if(ship.getPosition().x + (v * fps) < space.width - r) {
+          x += (v * fps);
         }
       }
 

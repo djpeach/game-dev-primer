@@ -19,6 +19,7 @@ int main() {
     exit(1);
   }
   sf::Sprite bg(bgTexture);
+  bg.setScale(dpi, dpi);
   sf::FloatRect space = bg.getGlobalBounds();
   sf::View view = screen.getView();
 
@@ -56,24 +57,28 @@ int main() {
       elapsedTime -= fps;
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        ship.setRotation(0);
         if(ship.getPosition().y - (v * fps) > h / 2) {
           y -= (v * fps);
           vy -= (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+        ship.setRotation(180);
         if(ship.getPosition().y + (v * fps) < space.height - h / 2) {
           y += (v * fps);
           vy += (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        ship.setRotation(-90);
         if(ship.getPosition().x - (v * fps) > w / 2) {
           x -= (v * fps);
           vx -= (v * fps);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        ship.setRotation(90);
         if(ship.getPosition().x + (v * fps) < space.width - w / 2) {
           x += (v * fps);
           vx += (v * fps);

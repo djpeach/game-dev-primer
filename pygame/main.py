@@ -4,22 +4,24 @@ pygame.init()
 w = 500
 h = 500
 
+x = 250
+y = 250
+r = 50
+v = 500
+
 screen = pygame.display.set_mode([w, h])
 pygame.display.set_caption("Primer - pygame")
+ship = pygame.image.load("assets/images/ship.png")
+ship = pygame.transform.scale(ship, (r * 2, r * 2))
 
 clock = pygame.time.Clock()
 elapsedTime = 0
 fps = 1 / 60
 
-x = 250
-y = 250
-r = 75
-v = 500
-
 running = True
 while running:
   clock.tick()
-  elapsedTime += clock.get_time()
+  elapsedTime += clock.get_rawtime()
 
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
@@ -48,10 +50,10 @@ while running:
       if (x + (v * fps) < w - r):
         x += (v * fps)
       else:
-        x = h - r
+        x = w - r
 
   screen.fill((255, 255, 255))
-  pygame.draw.circle(screen, (0, 0, 255), (int(x), int(y)), r)
+  screen.blit(ship, (int(x) - r, int(y) - r))
 
   pygame.display.flip()
 

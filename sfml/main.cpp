@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <SFML/Graphics.hpp>
 
 int main() {
@@ -7,7 +8,7 @@ int main() {
   int w = 500 * dpi;
   int h = 500 * dpi;
 
-  int r = 75 * dpi;
+  int r = 50 * dpi;
   int v = 500 * dpi;
 
   sf::RenderWindow screen(sf::VideoMode(w, h), "Primer - SFML");
@@ -16,10 +17,16 @@ int main() {
   float elapsedTime;
   float fps = 1 / 60.f;
 
-  sf::CircleShape circle(r);
-  circle.setFillColor(sf::Color(0, 0, 255));
-  circle.setOrigin(r, r);
-  circle.setPosition(screen.getSize().x / 2.f, screen.getSize().y / 2.f);
+  std::string shipFilePath = "assets/images/ship.png";
+  sf::Texture shipTexture;
+  if (!shipTexture.loadFromFile(shipFilePath)) {
+    std::cerr << "could not load from file: " << shipFilePath << std::endl;
+    exit(1);
+  }
+  sf::Sprite ship(shipTexture);
+  ship.scale((r * 2) / (float)shipTexture.getSize().x, (r * 2) / (float)shipTexture.getSize().y);
+  ship.setOrigin(ship.getLocalBounds().width / 2, ship.getLocalBounds().height / 2);
+  ship.setPosition(screen.getSize().x / 2.f, screen.getSize().y / 2.f);
 
   while (screen.isOpen()) {
     elapsedTime += clock.restart().asSeconds();
@@ -38,40 +45,40 @@ int main() {
       elapsedTime -= fps;
 
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if(circle.getPosition().y - (v * fps) > r) {
+        if(ship.getPosition().y - (v * fps) > r) {
           y -= (v * fps);
         } else {
-          y -= circle.getPosition().y - r;
+          y -= ship.getPosition().y - r;
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-        if(circle.getPosition().y + (v * fps) < h - r) {
+        if(ship.getPosition().y + (v * fps) < h - r) {
           y += (v * fps);
         } else {
-          y += h - (circle.getPosition().y + r);
+          y += h - (ship.getPosition().y + r);
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        if(circle.getPosition().x - (v * fps) > r) {
+        if(ship.getPosition().x - (v * fps) > r) {
           x -= (v * fps);
         } else {
-          x -= circle.getPosition().x - r;
+          x -= ship.getPosition().x - r;
         }
       }
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        if(circle.getPosition().x + (v * fps) < w - r) {
+        if(ship.getPosition().x + (v * fps) < w - r) {
           x += (v * fps);
         } else {
-          x += w - (circle.getPosition().x + r);
+          x += w - (ship.getPosition().x + r);
         }
       }
 
-      circle.move(x, y);
+      ship.move(x, y);
 
     }
 
     screen.clear(sf::Color(255, 255, 255));
-    screen.draw(circle);
+    screen.draw(ship);
     screen.display();
   }
 }

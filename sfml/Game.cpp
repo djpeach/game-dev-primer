@@ -8,12 +8,15 @@
 #define cargoCapacity 30
 
 Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)) {
-  screenSize.x = sf::VideoMode::getDesktopMode().width;
-  screenSize.y = sf::VideoMode::getDesktopMode().height;
+  // screenSize.x = sf::VideoMode::getDesktopMode().width;
+  // screenSize.y = sf::VideoMode::getDesktopMode().height;
+  screenSize.x = 800 * dpi;
+  screenSize.y = 800 * dpi;
 
   r = 50 * dpi;
   vel = 500 * dpi;
 
+  // screen.create(sf::VideoMode(screenSize.x, screenSize.y), "Primer - SFML", sf::Style::Fullscreen);
   screen.create(sf::VideoMode(screenSize.x, screenSize.y), "Primer - SFML");
   std::string bgFilePath = "assets/images/bg.jpg";
   if (!bgTexture.loadFromFile(bgFilePath)) {
@@ -70,7 +73,7 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
   cargoText.setPosition(screenSize.x - cargoTextBounds.width - 60, 10);
 
   infoText.setCharacterSize(50);
-  infoText.setFillColor(sf::Color::White);
+  infoText.setFillColor(sf::Color::Red);
   setInfoText("Use WASD to fly around");
 }
 

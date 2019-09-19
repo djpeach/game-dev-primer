@@ -157,8 +157,10 @@ void Game::handleInput(float fps) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
     for (int i=0;i<resourceCount;i++) {
       if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
-        resources.erase(resources.begin() + i);
-        cargoCount++;
+        if (cargoCount < 30) {
+          resources.erase(resources.begin() + i);
+          cargoCount++;
+        }
       }
     }
   }

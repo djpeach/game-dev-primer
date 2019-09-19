@@ -1,7 +1,12 @@
 #include "Game.hpp"
+#include <cstdlib>
+
+#define dpi 2
+
+#define resourceCount 15
+#define enemyCount 10
 
 Game::Game() {
-  dpi = 1;
   screenSize.x = 800 * dpi;
   screenSize.y = 800 * dpi;
 
@@ -28,6 +33,12 @@ Game::Game() {
   ship.scale((r * 2) / (float)shipTexture.getSize().x, (r * 2) / (float)shipTexture.getSize().y);
   ship.setOrigin(ship.getLocalBounds().width / 2, ship.getLocalBounds().height / 2);
   ship.setPosition(screen.getSize().x / 2.f, screen.getSize().y / 2.f);
+
+  std::string resFilePath = "assets/images/res.png";
+  if (!resTexture.loadFromFile(resFilePath)) {
+    std::cerr << "could not load ship from file: " << resFilePath << std::endl;
+    exit(1);
+  }
 }
 
 Game::~Game() {}
@@ -66,6 +77,20 @@ void Game::handleEvent(sf::Event event) {
 }
 
 void Game::update(float fps) {
+  while (resources.size() < resourceCount) {
+    std::cout << "adding resource: " << resourceCount - resources.size() << std::endl;
+    Resource res(resTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
+    resources.push_back(res);
+  }
+
+  handleInput(fps);
+
+  ship.move(shipPos);
+  view.move(viewPos);
+}
+
+void Game::handleInput(float fps) {
+
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
       ship.setRotation(-45);
@@ -130,15 +155,15 @@ void Game::update(float fps) {
       shipPos.x += (vel * fps);
     }
   }
-
-  ship.move(shipPos);
-  view.move(viewPos);
 }
 
 void Game::draw() {
   screen.setView(view);
   screen.clear(sf::Color(255, 255, 255));
   screen.draw(bg);
+  for (Resource & res : resources) {
+    res.draw(screen);
+  }
   screen.draw(ship);
   screen.display();
 }

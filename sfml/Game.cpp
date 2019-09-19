@@ -25,6 +25,13 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
   space = bg.getGlobalBounds();
   view = screen.getView();
 
+  std::string stationFilePath = "assets/images/station.png";
+  if (!stationTexture.loadFromFile(stationFilePath)) {
+    std::cerr << "could not load station image from file: " << stationFilePath << std::endl;
+    exit(1);
+  }
+  station = Station(stationTexture, sf::Vector2f(100, 100));
+
   std::string shipFilePath = "assets/images/ship.png";
   if (!shipTexture.loadFromFile(shipFilePath)) {
     std::cerr << "could not load ship from file: " << shipFilePath << std::endl;
@@ -33,20 +40,14 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
   ship.setTexture(shipTexture);
   ship.scale((r * 2) / (float)shipTexture.getSize().x, (r * 2) / (float)shipTexture.getSize().y);
   ship.setOrigin(ship.getLocalBounds().width / 2, ship.getLocalBounds().height / 2);
-  ship.setPosition(screen.getSize().x / 2.f, screen.getSize().y / 2.f);
+  sf::FloatRect stationBounds = station.getSprite().getGlobalBounds();
+  ship.setPosition(stationBounds.left + stationBounds.width / 2, stationBounds.top + stationBounds.height / 2);
 
   std::string resFilePath = "assets/images/res.png";
   if (!resTexture.loadFromFile(resFilePath)) {
     std::cerr << "could not load resource image from file: " << resFilePath << std::endl;
     exit(1);
   }
-
-  std::string stationFilePath = "assets/images/ship.png";
-  if (!stationTexture.loadFromFile(stationFilePath)) {
-    std::cerr << "could not load station image from file: " << stationFilePath << std::endl;
-    exit(1);
-  }
-  station = Station(stationTexture, sf::Vector2f(100, 100));
 
   std::string fontFilePath = "assets/fonts/arial.ttf";
   if (!font.loadFromFile(fontFilePath)) {

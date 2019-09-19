@@ -6,7 +6,7 @@
 #define resourceCount 15
 #define enemyCount 10
 
-Game::Game() {
+Game::Game() : score(0), cargoCount(0) {
   screenSize.x = 800 * dpi;
   screenSize.y = 800 * dpi;
 
@@ -78,7 +78,6 @@ void Game::handleEvent(sf::Event event) {
 
 void Game::update(float fps) {
   while (resources.size() < resourceCount) {
-    std::cout << "adding resource: " << resourceCount - resources.size() << std::endl;
     Resource res(resTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
     resources.push_back(res);
   }
@@ -153,6 +152,14 @@ void Game::handleInput(float fps) {
     }
     if(ship.getPosition().x + (vel * fps) < space.width - r) {
       shipPos.x += (vel * fps);
+    }
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) || true) {
+    for (int i=0;i<resourceCount;i++) {
+      if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
+        resources.erase(resources.begin() + i);
+        cargoCount++;
+      }
     }
   }
 }

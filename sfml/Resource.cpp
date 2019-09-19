@@ -14,11 +14,14 @@ Resource::Resource(sf::Texture & texture, sf::Vector2f position) {
   sprite.setTexture(texture);
   sprite.setPosition(position);
   sprite.scale(dpi, dpi);
-  std::cout << "creating resource: " << position.x << ", " << position.y << std::endl;
 }
 
 Resource::~Resource() {
 
+}
+
+const sf::Sprite & Resource::getSprite() {
+  return sprite;
 }
 
 void Resource::update(float dt) {
@@ -26,6 +29,5 @@ void Resource::update(float dt) {
 }
 
 void Resource::draw(sf::RenderWindow & window) {
-  // std::cout << "drawing resource" << std::endl;
   window.draw(sprite);
 }

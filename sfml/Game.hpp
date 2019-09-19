@@ -23,4 +23,5 @@ class Game {
     sf::Vector2f screenSize, shipPos, viewPos;
     std::vector<Resource> resources;
     std::vector<Resource> loot;
+    int score, cargoCount;
 };

@@ -14,6 +14,14 @@ avoid, but things I use all the time while building games.
 So if you too want to learn a language and want to do it by building something you will be able to see, use, and share, I encourage 
 you to give game dev a try!
 
+# What are we building?
+
+You can build anything, but I will build a little space-explorer game to showcase a lot of concepts:
+
+![simple](https://user-images.githubusercontent.com/31779571/65276876-b8474800-daf6-11e9-8096-3d46bb68c36f.gif)      ![demo](https://user-images.githubusercontent.com/31779571/65276632-25a6a900-daf6-11e9-95b3-602a0dbda4fc.gif) 
+
+We start really simple and add features as we go!
+
 # Where do I get started?
 
 Now you're asking the right questions! There are many many many resources online for learning game dev with both these libraries. 

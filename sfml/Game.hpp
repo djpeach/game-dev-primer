@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Resource.hpp"
+#include "Station.hpp"
 
 class Game {
   public:
@@ -19,7 +20,7 @@ class Game {
     sf::RenderWindow screen;
     sf::View view;
     sf::FloatRect space;
-    sf::Texture bgTexture, shipTexture, resTexture, enemyTexture;
+    sf::Texture bgTexture, shipTexture, resTexture, enemyTexture, stationTexture;
     sf::Sprite bg, ship;
     float r, vel;
     sf::Vector2f screenSize, shipPos, viewPos;
@@ -28,4 +29,5 @@ class Game {
     int score, cargoCount;
     sf::Font font;
     sf::Text infoText, cargoText, scoreText;
+    Station station;
 };

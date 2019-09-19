@@ -7,7 +7,7 @@
 #define enemyCount 10
 #define cargoCapacity 30
 
-Game::Game() : score(0), cargoCount(0) {
+Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)) {
   screenSize.x = 800 * dpi;
   screenSize.y = 800 * dpi;
 
@@ -40,6 +40,13 @@ Game::Game() : score(0), cargoCount(0) {
     std::cerr << "could not load resource image from file: " << resFilePath << std::endl;
     exit(1);
   }
+
+  std::string stationFilePath = "assets/images/ship.png";
+  if (!stationTexture.loadFromFile(stationFilePath)) {
+    std::cerr << "could not load station image from file: " << stationFilePath << std::endl;
+    exit(1);
+  }
+  station = Station(stationTexture, sf::Vector2f(100, 100));
 
   std::string fontFilePath = "assets/fonts/arial.ttf";
   if (!font.loadFromFile(fontFilePath)) {
@@ -183,24 +190,19 @@ void Game::handleInput(float fps) {
       shipPos.x += (vel * fps);
     }
   }
-  std::vector<int> resToRemove;
-  for (int i=0;i<resourceCount;i++) {
+  for (int i=0;i<resources.size();i++) {
     if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
       setInfoText("Press E to collect resource");
       if (cargoCount < cargoCapacity) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-          resToRemove.push_back(i);
+          resources.erase(resources.begin() + i);
           cargoCount++;
-          std::cout << "adding" << std::endl;
           setInfoText("Resource collected!");
         }
       } else {
         setInfoText("Cargo full! Drop off at station");
       }
     }
-  }
-  for (int i=0;i<resToRemove.size();i++) {
-    resources.erase(resources.begin() + i);
   }
 }
 
@@ -212,6 +214,7 @@ void Game::draw() {
   for (Resource & res : resources) {
     res.draw(screen);
   }
+  station.draw(screen);
   screen.draw(ship);
   screen.draw(scoreText);
   screen.draw(cargoText);

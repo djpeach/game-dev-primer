@@ -1,6 +1,6 @@
 # What is this repo?
 
-This repo is a collection of simple games and scripts written in various programming languages. At first it will be just 
+This game is an example of how to build a game from scratch. At first it will be just 
 python with [pygame](https://github.com/pygame/pygame) and C++ with [SFML](https://github.com/SFML/SFML). I plan to add Javascript
 with HTML canvas, but I will focus on python and C++ bc that is what 230 and 240 students need to learn.
 

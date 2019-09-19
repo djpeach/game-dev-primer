@@ -6,10 +6,10 @@ with HTML canvas, but I will focus on python and C++ bc that is what 230 and 240
 
 # Why should I build games?
 
-Games are a fun, although sometimes challenging, way to learn a language. For example, C++ is a language I has a particular disdain 
+Games are a fun, although sometimes challenging, way to learn a language. For example, C++ is a language I had a particular disdain 
 for, even though I knew about its power and performance. I simply did not want to learn it. Enter game dev with SFML, and I suddenly 
-love C++ and actaully learned more than I ever thought I would. Pointers, casting, r and l values, are no longer scary or things to 
-avoid, but things I use all the time while building games. 
+love C++ and actaully learned more than I ever thought I would. Pointers are no longer scary or things to 
+avoid, but something I use all the time while building games. 
 
 So if you too want to learn a language and want to do it by building something you will be able to see, use, and share, I encourage 
 you to give game dev a try!
@@ -27,14 +27,14 @@ We start really simple and add features as we go!
 Now you're asking the right questions! There are many many many resources online for learning game dev with both these libraries. 
 I plan on adding a full wiki of resources here in the future but for now, I will just list a few topics to start with in both language.
 
-### pygame
+### pygame (python)
 ***
 
 * https://www.pygame.org/wiki/tutorials
 * https://techwithtim.net/tutorials/game-development-with-python/
 * https://pythonprogramming.net/pygame-python-3-part-1-intro/
 
-### sfml
+### sfml (c++)
 ***
 
 * https://www.sfml-dev.org/tutorials/2.5/

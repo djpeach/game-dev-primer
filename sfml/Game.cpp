@@ -52,6 +52,12 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
     exit(1);
   }
 
+  std::string enemyFilePath = "assets/images/enemy.png";
+  if (!enemyTexture.loadFromFile(enemyFilePath)) {
+    std::cerr << "could not load enemy image from file: " << enemyFilePath << std::endl;
+    exit(1);
+  }
+
   std::string fontFilePath = "assets/fonts/arial.ttf";
   if (!font.loadFromFile(fontFilePath)) {
     std::cerr << "could not load font from file: " << fontFilePath << std::endl;
@@ -116,6 +122,11 @@ void Game::update(float fps) {
   while (resources.size() < resourceCount) {
     Resource res(resTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
     resources.push_back(res);
+  }
+
+  while (enemies.size() < enemyCount) {
+    Enemy enemy(enemyTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
+    enemies.push_back(enemy);
   }
 
   handleInput(fps);
@@ -194,6 +205,7 @@ void Game::handleInput(float fps) {
       shipPos.x += (vel * fps);
     }
   }
+
   for (int i=0;i<resources.size();i++) {
     if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
       setInfoText("Press E to collect resource");
@@ -229,6 +241,9 @@ void Game::draw() {
   screen.draw(bg);
   for (Resource & res : resources) {
     res.draw(screen);
+  }
+  for (Enemy & enemy : enemies) {
+    enemy.draw(screen);
   }
   station.draw(screen);
   screen.draw(ship);

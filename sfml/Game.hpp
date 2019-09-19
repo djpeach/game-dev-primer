@@ -4,6 +4,7 @@
 
 #include "Resource.hpp"
 #include "Station.hpp"
+#include "Enemy.hpp"
 
 class Game {
   public:
@@ -30,4 +31,5 @@ class Game {
     sf::Font font;
     sf::Text infoText, cargoText, scoreText;
     Station station;
+    std::vector<Enemy> enemies;
 };

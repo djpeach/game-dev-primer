@@ -154,7 +154,7 @@ void Game::handleInput(float fps) {
       shipPos.x += (vel * fps);
     }
   }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) || true) {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
     for (int i=0;i<resourceCount;i++) {
       if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
         resources.erase(resources.begin() + i);

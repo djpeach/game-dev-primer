@@ -5,10 +5,10 @@
 #define dpi 2
 
 #define resourceCount 15
-#define enemyCount 100
+#define enemyCount 20
 #define cargoCapacity 30
 
-Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)) {
+Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)), lives(5), gameOver(false) {
   static bool seeded = false;
   if(!seeded) {
       srand(time(nullptr));
@@ -62,6 +62,12 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
   std::string enemyFilePath = "assets/images/enemy.png";
   if (!enemyTexture.loadFromFile(enemyFilePath)) {
     std::cerr << "could not load enemy image from file: " << enemyFilePath << std::endl;
+    exit(1);
+  }
+
+  std::string explosionFilePath = "assets/images/explosion.png";
+  if (!explosionTexture.loadFromFile(explosionFilePath)) {
+    std::cerr << "could not load enemy explosion from file: " << explosionFilePath << std::endl;
     exit(1);
   }
 
@@ -126,28 +132,37 @@ void Game::handleEvent(sf::Event event) {
 }
 
 void Game::update(float fps) {
-  while (resources.size() < resourceCount) {
-    Resource res(resTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
-    resources.push_back(res);
+  if (!gameOver) {
+    while (resources.size() < resourceCount) {
+      Resource res(resTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
+      resources.push_back(res);
+    }
+
+    while (enemies.size() < enemyCount) {
+      Enemy enemy(enemyTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100), space);
+      enemies.push_back(enemy);
+    }
+
+    for (Enemy & enemy : enemies) {
+      enemy.update(fps);
+    }
+
+    handleInput(fps);
+
+    for (int i=0;i<explosions.size();i++) {
+      explosions[i].update(fps);
+      if (explosions[i].getTimeAlive().asSeconds() > 1.5f) {
+        explosions.erase(explosions.begin() + i);
+      }
+    }
+
+    ship.move(shipPos);
+    scoreText.move(viewPos);
+    cargoText.setString(std::to_string(cargoCount) + " / " + std::to_string(cargoCapacity));
+    cargoText.move(viewPos);
+    infoText.move(viewPos);
+    view.move(viewPos);
   }
-
-  while (enemies.size() < enemyCount) {
-    Enemy enemy(enemyTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100), space);
-    enemies.push_back(enemy);
-  }
-
-  for (Enemy & enemy : enemies) {
-    enemy.update(fps);
-  }
-
-  handleInput(fps);
-
-  ship.move(shipPos);
-  scoreText.move(viewPos);
-  cargoText.setString(std::to_string(cargoCount) + " / " + std::to_string(cargoCapacity));
-  cargoText.move(viewPos);
-  infoText.move(viewPos);
-  view.move(viewPos);
 }
 
 void Game::handleInput(float fps) {
@@ -245,7 +260,17 @@ void Game::handleInput(float fps) {
   }
 
   for (int i=0;i<enemies.size();i++) {
-    if (enemies[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
+    if (enemies[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds()) && !station.getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
+      lives--;
+      if (lives <= 0) {
+        setInfoText("Too much damage, you died!");
+        gameOver = true;
+      } else {
+        setInfoText("That hurt! Try not to hit those. " + std::to_string(lives) + " lives left");
+      }
+      Explosion exp(explosionTexture, enemies[i].getPosition());
+      explosions.push_back(exp);
+      enemies.erase(enemies.begin() + i);
     }
   }
 }
@@ -261,6 +286,9 @@ void Game::draw() {
   }
   for (Enemy & enemy : enemies) {
     enemy.draw(screen);
+  }
+  for (Explosion & explosion : explosions) {
+    explosion.draw(screen);
   }
   screen.draw(ship);
   screen.draw(scoreText);

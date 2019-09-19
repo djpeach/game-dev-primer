@@ -30,6 +30,10 @@ const sf::Sprite & Enemy::getSprite() {
   return sprite;
 }
 
+const sf::Vector2f & Enemy::getPosition() {
+  return sprite.getPosition();
+}
+
 void Enemy::update(float dt) {
   if (sprite.getGlobalBounds().left < space.left || sprite.getGlobalBounds().left + sprite.getGlobalBounds().width > space.width) {
     dir.x = -dir.x;

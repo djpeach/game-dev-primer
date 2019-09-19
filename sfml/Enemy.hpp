@@ -7,6 +7,7 @@ class Enemy {
     ~Enemy();
 
     const sf::Sprite & getSprite();
+    const sf::Vector2f & getPosition();
 
     void update(float dt);
     void draw(sf::RenderWindow & window);

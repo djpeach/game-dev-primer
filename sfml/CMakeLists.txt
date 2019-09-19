@@ -9,7 +9,8 @@ find_package(SFML 2.5.1 COMPONENTS system window graphics audio network REQUIRED
 
 #we add the executable of the program
 add_executable(primer
-main.cpp
+Enemy.cpp       Game.cpp        Resource.cpp    Station.cpp     main.cpp
+Enemy.hpp       Game.hpp        Resource.hpp    Station.hpp
 )
 
 target_link_libraries(primer sfml-system sfml-window sfml-graphics sfml-audio sfml-network )

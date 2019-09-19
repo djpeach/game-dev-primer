@@ -204,6 +204,16 @@ void Game::handleInput(float fps) {
       }
     }
   }
+
+  if (station.getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
+    setInfoText("Press E to sell cargo");
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+      score += cargoCount;
+      scoreText.setString(std::to_string(score));
+      cargoCount = 0;
+      setInfoText("Resources sold, go get more!");
+    }
+  }
 }
 
 

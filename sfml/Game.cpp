@@ -60,6 +60,10 @@ Game::Game() : score(0), cargoCount(0) {
   cargoText.setFillColor(sf::Color::Green);
   sf::FloatRect cargoTextBounds = cargoText.getGlobalBounds();
   cargoText.setPosition(screenSize.x - cargoTextBounds.width - 60, 10);
+
+  infoText.setCharacterSize(50);
+  infoText.setFillColor(sf::Color::White);
+  setInfoText("Use WASD to fly around");
 }
 
 Game::~Game() {}
@@ -109,6 +113,7 @@ void Game::update(float fps) {
   scoreText.move(viewPos);
   cargoText.setString(std::to_string(cargoCount) + " / " + std::to_string(cargoCapacity));
   cargoText.move(viewPos);
+  infoText.move(viewPos);
   view.move(viewPos);
 }
 
@@ -178,17 +183,27 @@ void Game::handleInput(float fps) {
       shipPos.x += (vel * fps);
     }
   }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) || true) {
-    for (int i=0;i<resourceCount;i++) {
-      if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
-        if (cargoCount < cargoCapacity) {
-          resources.erase(resources.begin() + i);
+  std::vector<int> resToRemove;
+  for (int i=0;i<resourceCount;i++) {
+    if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
+      setInfoText("Press E to collect resource");
+      if (cargoCount < cargoCapacity) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+          resToRemove.push_back(i);
           cargoCount++;
+          std::cout << "adding" << std::endl;
+          setInfoText("Resource collected!");
         }
+      } else {
+        setInfoText("Cargo full! Drop off at station");
       }
     }
   }
+  for (int i=0;i<resToRemove.size();i++) {
+    resources.erase(resources.begin() + i);
+  }
 }
+
 
 void Game::draw() {
   screen.setView(view);
@@ -200,5 +215,15 @@ void Game::draw() {
   screen.draw(ship);
   screen.draw(scoreText);
   screen.draw(cargoText);
+  screen.draw(infoText);
   screen.display();
+}
+
+void Game::setInfoText(const std::string & string) {
+  if (infoText.getString() != string) {
+    infoText.setString(string);
+    sf::FloatRect infoTextBounds = infoText.getGlobalBounds();
+    infoText.setOrigin(infoTextBounds.width / 2, 0);
+    infoText.setPosition(screen.getView().getCenter().x, screen.getView().getCenter().y - screenSize.y / 2 + 10);
+  }
 }

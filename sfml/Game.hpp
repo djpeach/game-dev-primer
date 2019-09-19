@@ -14,6 +14,8 @@ class Game {
     void handleInput(float fps);
     void draw();
   private:
+    void setInfoText(const std::string & string);
+
     sf::RenderWindow screen;
     sf::View view;
     sf::FloatRect space;

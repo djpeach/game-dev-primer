@@ -21,6 +21,5 @@ void Station::update(float dt) {
 }
 
 void Station::draw(sf::RenderWindow & window) {
-  std::cout << "drawing station" << std::endl;
   window.draw(sprite);
 }

@@ -45,18 +45,24 @@ void Enemy::update(float dt) {
   distance.x += abs(dir.x * dpi * dt);
   distance.y += abs(dir.y * dpi * dt);
 
-  if (distance.x > 300) {
-    if (dir.y != 0) {
+  if (distance.x > 500) {
+    if (dir.x != 0) {
       int dirs[3] = {-1, 0, 1};
-      dir.x = dirs[rand() % 3] * 100;
+      dir.y = dirs[rand() % 3] * 100;
+    } else {
+      int dirs[2] = {-1, 1};
+      dir.y = dirs[rand() % 2] * 100;
     }
     distance.x = 0;
   }
 
-  if (distance.y > 300) {
-    if (dir.x != 0) {
+  if (distance.y > 500) {
+    if (dir.y != 0) {
       int dirs[3] = {-1, 0, 1};
-      dir.y = dirs[rand() % 3] * 100;
+      dir.x = dirs[rand() % 3] * 100;
+    } else {
+      int dirs[2] = {-1, 1};
+      dir.x = dirs[rand() % 2] * 100;
     }
     distance.y = 0;
   }

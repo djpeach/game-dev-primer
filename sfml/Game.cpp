@@ -5,6 +5,7 @@
 
 #define resourceCount 15
 #define enemyCount 10
+#define cargoCapacity 30
 
 Game::Game() : score(0), cargoCount(0) {
   screenSize.x = 800 * dpi;
@@ -36,9 +37,29 @@ Game::Game() : score(0), cargoCount(0) {
 
   std::string resFilePath = "assets/images/res.png";
   if (!resTexture.loadFromFile(resFilePath)) {
-    std::cerr << "could not load ship from file: " << resFilePath << std::endl;
+    std::cerr << "could not load resource image from file: " << resFilePath << std::endl;
     exit(1);
   }
+
+  std::string fontFilePath = "assets/fonts/arial.ttf";
+  if (!font.loadFromFile(fontFilePath)) {
+    std::cerr << "could not load font from file: " << fontFilePath << std::endl;
+    exit(1);
+  }
+  infoText.setFont(font);
+  cargoText.setFont(font);
+  scoreText.setFont(font);
+
+  scoreText.setCharacterSize(60);
+  scoreText.setString(std::to_string(score));
+  scoreText.setFillColor(sf::Color::Yellow);
+  scoreText.setPosition(25, 10);
+
+  cargoText.setCharacterSize(60);
+  cargoText.setString(std::to_string(cargoCount) + " / " + std::to_string(cargoCapacity));
+  cargoText.setFillColor(sf::Color::Green);
+  sf::FloatRect cargoTextBounds = cargoText.getGlobalBounds();
+  cargoText.setPosition(screenSize.x - cargoTextBounds.width - 60, 10);
 }
 
 Game::~Game() {}
@@ -85,6 +106,9 @@ void Game::update(float fps) {
   handleInput(fps);
 
   ship.move(shipPos);
+  scoreText.move(viewPos);
+  cargoText.setString(std::to_string(cargoCount) + " / " + std::to_string(cargoCapacity));
+  cargoText.move(viewPos);
   view.move(viewPos);
 }
 
@@ -154,10 +178,10 @@ void Game::handleInput(float fps) {
       shipPos.x += (vel * fps);
     }
   }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) || true) {
     for (int i=0;i<resourceCount;i++) {
       if (resources[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
-        if (cargoCount < 30) {
+        if (cargoCount < cargoCapacity) {
           resources.erase(resources.begin() + i);
           cargoCount++;
         }
@@ -174,5 +198,7 @@ void Game::draw() {
     res.draw(screen);
   }
   screen.draw(ship);
+  screen.draw(scoreText);
+  screen.draw(cargoText);
   screen.display();
 }

@@ -24,4 +24,6 @@ class Game {
     std::vector<Resource> resources;
     std::vector<Resource> loot;
     int score, cargoCount;
+    sf::Font font;
+    sf::Text infoText, cargoText, scoreText;
 };

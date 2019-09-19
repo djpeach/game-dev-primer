@@ -8,8 +8,8 @@
 #define cargoCapacity 30
 
 Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)) {
-  screenSize.x = 800 * dpi;
-  screenSize.y = 800 * dpi;
+  screenSize.x = sf::VideoMode::getDesktopMode().width;
+  screenSize.y = sf::VideoMode::getDesktopMode().height;
 
   r = 50 * dpi;
   vel = 500 * dpi;

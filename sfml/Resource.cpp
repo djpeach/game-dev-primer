@@ -2,15 +2,7 @@
 
 #define dpi 2
 
-#include <ctime>
-
 Resource::Resource(sf::Texture & texture, sf::Vector2f position) {
-  static bool seeded = false;
-  if(!seeded) {
-      srand(time(nullptr));
-      seeded = true;
-  }
-
   sprite.setTexture(texture);
   sprite.setPosition(position);
   sprite.scale(dpi, dpi);

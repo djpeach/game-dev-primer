@@ -18,7 +18,7 @@ const sf::Sprite & Enemy::getSprite() {
 }
 
 void Enemy::update(float dt) {
-
+  
 }
 
 void Enemy::draw(sf::RenderWindow & window) {

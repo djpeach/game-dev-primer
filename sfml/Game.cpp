@@ -1,13 +1,20 @@
 #include "Game.hpp"
 #include <cstdlib>
+#include <ctime>
 
 #define dpi 2
 
 #define resourceCount 15
-#define enemyCount 10
+#define enemyCount 15
 #define cargoCapacity 30
 
 Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)) {
+  static bool seeded = false;
+  if(!seeded) {
+      srand(time(nullptr));
+      seeded = true;
+  }
+
   // screenSize.x = sf::VideoMode::getDesktopMode().width;
   // screenSize.y = sf::VideoMode::getDesktopMode().height;
   screenSize.x = 800 * dpi;
@@ -46,7 +53,7 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
   sf::FloatRect stationBounds = station.getSprite().getGlobalBounds();
   ship.setPosition(stationBounds.left + stationBounds.width / 2, stationBounds.top + stationBounds.height / 2);
 
-  std::string resFilePath = "assets/images/res.png";
+  std::string resFilePath = "assets/images/yellowOre.png";
   if (!resTexture.loadFromFile(resFilePath)) {
     std::cerr << "could not load resource image from file: " << resFilePath << std::endl;
     exit(1);
@@ -127,6 +134,10 @@ void Game::update(float fps) {
   while (enemies.size() < enemyCount) {
     Enemy enemy(enemyTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
     enemies.push_back(enemy);
+  }
+
+  for (Enemy & enemy : enemies) {
+    enemy.update(fps);
   }
 
   handleInput(fps);

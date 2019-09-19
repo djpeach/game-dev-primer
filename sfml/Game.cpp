@@ -5,7 +5,7 @@
 #define dpi 2
 
 #define resourceCount 15
-#define enemyCount 15
+#define enemyCount 100
 #define cargoCapacity 30
 
 Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100, 100)) {
@@ -132,7 +132,7 @@ void Game::update(float fps) {
   }
 
   while (enemies.size() < enemyCount) {
-    Enemy enemy(enemyTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100));
+    Enemy enemy(enemyTexture, sf::Vector2f(rand() % ((int)space.width - 200) + 100, rand() % ((int)space.height - 200) + 100), space);
     enemies.push_back(enemy);
   }
 
@@ -243,6 +243,11 @@ void Game::handleInput(float fps) {
       setInfoText("Resources sold, go get more!");
     }
   }
+
+  for (int i=0;i<enemies.size();i++) {
+    if (enemies[i].getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
+    }
+  }
 }
 
 
@@ -250,13 +255,13 @@ void Game::draw() {
   screen.setView(view);
   screen.clear(sf::Color(255, 255, 255));
   screen.draw(bg);
+  station.draw(screen);
   for (Resource & res : resources) {
     res.draw(screen);
   }
   for (Enemy & enemy : enemies) {
     enemy.draw(screen);
   }
-  station.draw(screen);
   screen.draw(ship);
   screen.draw(scoreText);
   screen.draw(cargoText);

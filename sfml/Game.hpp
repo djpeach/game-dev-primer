@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "Resource.hpp"
 #include "Station.hpp"
@@ -35,4 +36,7 @@ class Game {
     std::vector<Enemy> enemies;
     std::vector<Explosion> explosions;
     bool gameOver;
+    sf::Music music;
+    sf::SoundBuffer pickupBuffer, explosionBuffer, coinBuffer;
+    sf::Sound pickupSound, explosionSound, coinSound;
 };

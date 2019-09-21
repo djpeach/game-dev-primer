@@ -15,6 +15,35 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
       seeded = true;
   }
 
+  std::string musicFilePath = "assets/audio/music1.wav";
+  if (!music.openFromFile(musicFilePath)) {
+    std::cerr << "could not load music from file: " << musicFilePath << std::endl;
+    exit(1);
+  }
+  music.setVolume(50);
+  music.play();
+
+  std::string pickupBufferFilePath = "assets/audio/pickup1.wav";
+  if (!pickupBuffer.loadFromFile(pickupBufferFilePath)) {
+    std::cerr << "could not load pickup buffer from file: " << pickupBufferFilePath << std::endl;
+    exit(1);
+  }
+  pickupSound.setBuffer(pickupBuffer);
+
+  std::string explosionBufferFilePath = "assets/audio/explosion1.wav";
+  if (!explosionBuffer.loadFromFile(explosionBufferFilePath)) {
+    std::cerr << "could not load pickup buffer from file: " << explosionBufferFilePath << std::endl;
+    exit(1);
+  }
+  explosionSound.setBuffer(explosionBuffer);
+
+  std::string coinBufferFilePath = "assets/audio/coin3.wav";
+  if (!coinBuffer.loadFromFile(coinBufferFilePath)) {
+    std::cerr << "could not load pickup buffer from file: " << coinBufferFilePath << std::endl;
+    exit(1);
+  }
+  coinSound.setBuffer(coinBuffer);
+
   // screenSize.x = sf::VideoMode::getDesktopMode().width;
   // screenSize.y = sf::VideoMode::getDesktopMode().height;
   screenSize.x = 800 * dpi;
@@ -238,6 +267,7 @@ void Game::handleInput(float fps) {
       if (cargoCount < cargoCapacity) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
           resources.erase(resources.begin() + i);
+          pickupSound.play();
           cargoCount++;
           setInfoText("Resource collected!");
         }
@@ -250,12 +280,13 @@ void Game::handleInput(float fps) {
   if (station.getSprite().getGlobalBounds().intersects(ship.getGlobalBounds())) {
     if (cargoCount > 0) {
       setInfoText("Press E to sell cargo");
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-      score += cargoCount;
-      scoreText.setString(std::to_string(score));
-      cargoCount = 0;
-      setInfoText("Resources sold, go get more!");
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+        score += cargoCount;
+        scoreText.setString(std::to_string(score));
+        cargoCount = 0;
+        setInfoText("Resources sold, go get more!");
+        coinSound.play();
+      }
     }
   }
 
@@ -265,10 +296,12 @@ void Game::handleInput(float fps) {
       if (lives <= 0) {
         setInfoText("Too much damage, you died!");
         gameOver = true;
+        music.stop();
       } else {
         setInfoText("That hurt! Try not to hit those. " + std::to_string(lives) + " lives left");
       }
       Explosion exp(explosionTexture, enemies[i].getPosition());
+      explosionSound.play();
       explosions.push_back(exp);
       enemies.erase(enemies.begin() + i);
     }

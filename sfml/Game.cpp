@@ -21,7 +21,7 @@ Game::Game() : score(0), cargoCount(0), station(stationTexture, sf::Vector2f(100
     exit(1);
   }
   music.setVolume(50);
-  music.play();
+  music.setLoop(true);
 
   std::string pickupBufferFilePath = "assets/audio/pickup1.wav";
   if (!pickupBuffer.loadFromFile(pickupBufferFilePath)) {
@@ -157,6 +157,14 @@ void Game::run() {
 void Game::handleEvent(sf::Event event) {
   if (event.type == sf::Event::Closed) {
     screen.close();
+  } else if (event.type == sf::Event::KeyPressed) {
+    if (event.key.code == sf::Keyboard::M) {
+      if (music.getStatus() == sf::Music::Playing) {
+        music.stop();
+      } else {
+        music.play();
+      }
+    }
   }
 }
 
